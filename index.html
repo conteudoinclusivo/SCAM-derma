@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SCAM</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://unpkg.com/phosphor-icons"></script>
+</head>
+<body>
+
+    <div id="app">
+        <main id="dashboard-view" class="view active">
+            <header class="main-header">
+                <h1>Painel de Controle</h1>
+                <i class="ph-gear"></i>
+            </header>
+            <section class="actions">
+                <div class="action-card" data-target="receber-view">
+                    <div class="text-content">
+                        <h2>Receber Amostra</h2>
+                        <p>Adicionar novas amostras ao seu inventário.</p>
+                    </div>
+                    <img src="http://googleusercontent.com/file_content/0" alt="Ilustração de uma caixa sendo recebida">
+                </div>
+                <div class="action-card" data-target="entregar-view">
+                    <div class="text-content">
+                        <h2>Entregar Amostra</h2>
+                        <p>Registrar a entrega de amostras aos pacientes.</p>
+                    </div>
+                    <img src="http://googleusercontent.com/file_content/1" alt="Ilustração de uma caixa sendo entregue">
+                </div>
+            </section>
+            <section class="reminders">
+                <h2>Próximos Lembretes</h2>
+                <div id="lembretes-list">
+                    </div>
+            </section>
+            <section class="expiring">
+                <h2>Vencimentos Próximos</h2>
+                <div id="vencimentos-list">
+                    </div>
+            </section>
+        </main>
+
+        <main id="inventario-view" class="view">
+             <header class="view-header">
+                <i class="ph-arrow-left back-button"></i>
+                <h1>Inventário</h1>
+            </header>
+            <div class="search-and-filter">
+                <div class="search-bar">
+                    <i class="ph-magnifying-glass"></i>
+                    <input type="text" id="search-inventory" placeholder="Nome do Remédio, Substância...">
+                </div>
+                <div class="filters">
+                    <select id="filter-categoria">
+                        <option value="">Categoria</option>
+                    </select>
+                    <select id="filter-vencimento">
+                        <option value="">Vencimento</option>
+                        <option value="30">Vence em 30 dias</option>
+                        <option value="60">Vence em 60 dias</option>
+                        <option value="90">Vence em 90 dias</option>
+                    </select>
+                </div>
+            </div>
+            <div id="inventory-list" class="inventory-list">
+                 </div>
+        </main>
+
+        <main id="relatorios-view" class="view">
+            <header class="view-header">
+                <i class="ph-arrow-left back-button"></i>
+                <h1>Relatórios</h1>
+            </header>
+            <section class="report-section">
+                <h2>Movimentação de Amostras</h2>
+                <div class="toggle-switch">
+                    <button class="toggle-btn active" data-period="mensal">Mensal</button>
+                    <button class="toggle-btn" data-period="trimestral">Trimestral</button>
+                </div>
+                <p class="chart-title">Amostras Recebidas vs. Entregues</p>
+                <div class="chart-container">
+                    <canvas id="movimentacaoChart"></canvas>
+                </div>
+            </section>
+            <section class="report-section">
+                <h2>Amostras Próximas do Vencimento</h2>
+                <div id="report-vencimentos-list">
+                    </div>
+                <button id="export-btn" class="export-button">Exportar para .xlsx</button>
+            </section>
+        </main>
+
+        <main id="receber-view" class="view form-view">
+            <header class="view-header">
+                <i class="ph-arrow-left back-button"></i>
+                <h1>Receber Amostras</h1>
+            </header>
+            <form id="form-receber">
+                <div class="form-group">
+                    <label for="receber-remedio">Remédio</label>
+                    <input type="text" id="receber-remedio" placeholder="Buscar remédio" required>
+                </div>
+                <div class="form-group">
+                    <label for="receber-substancia">Substância</label>
+                    <input type="text" id="receber-substancia" placeholder="Buscar substância">
+                </div>
+                 <div class="form-group">
+                    <label>Tipo</label>
+                    <div class="toggle-switch form-toggle">
+                        <button type="button" class="toggle-btn active" data-value="Amostra">Amostra</button>
+                        <button type="button" class="toggle-btn" data-value="Original">Original</button>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="receber-categoria">Categoria</label>
+                    <select id="receber-categoria">
+                        <option value="">Selecione</option>
+                        </select>
+                </div>
+                <div class="form-group">
+                    <label for="receber-laboratorio">Laboratório</label>
+                    <input type="text" id="receber-laboratorio" placeholder="Buscar laboratório">
+                </div>
+                <div class="form-group">
+                    <label for="receber-representante">Representante</label>
+                    <input type="text" id="receber-representante" placeholder="Buscar representante">
+                </div>
+                <div class="form-group">
+                    <label for="receber-quantidade">Quantidade Recebida</label>
+                    <input type="number" id="receber-quantidade" placeholder="0" required>
+                </div>
+                <div class="form-group">
+                    <label for="receber-validade">Data de Validade</label>
+                    <input type="date" id="receber-validade" required>
+                </div>
+                <button type="submit" class="cta-button">Salvar</button>
+            </form>
+        </main>
+
+        <main id="entregar-view" class="view form-view">
+            <header class="view-header">
+                <i class="ph-arrow-left back-button"></i>
+                <h1>Nova Entrega</h1>
+            </header>
+            <form id="form-entregar">
+                <div class="form-group">
+                    <label for="entregar-paciente">Paciente</label>
+                    <input type="text" id="entregar-paciente" placeholder="Buscar paciente..." required>
+                </div>
+                <div class="form-group">
+                    <label for="entregar-remedio">Remédio</label>
+                    <input type="text" id="entregar-remedio" placeholder="Buscar remédio..." required>
+                </div>
+                 <div class="form-group">
+                    <label for="entregar-local">Local de Entrega</label>
+                    <select id="entregar-local" required>
+                        <option value="">Selecione o local</option>
+                        <option>Clínica</option>
+                        <option>Posto de Saúde</option>
+                        <option>Família</option>
+                        <option>Universidade</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="entregar-quantidade">Quantidade a Ser Entregue</label>
+                    <input type="number" id="entregar-quantidade" placeholder="0" required>
+                </div>
+                <div class="form-group switch-group">
+                    <label for="agendar-lembrete">Agendar Lembrete?</label>
+                    <label class="switch">
+                        <input type="checkbox" id="agendar-lembrete">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                <div id="lembrete-fields" class="hidden">
+                     <div class="form-group">
+                        <label for="lembrete-titulo">Título do Lembrete</label>
+                        <input type="text" id="lembrete-titulo" placeholder="Ex: Próxima consulta">
+                    </div>
+                     <div class="form-group">
+                        <label for="lembrete-data">Data</label>
+                        <input type="date" id="lembrete-data">
+                    </div>
+                     <div class="form-group">
+                        <label for="lembrete-hora">Hora</label>
+                        <input type="time" id="lembrete-hora">
+                    </div>
+                </div>
+                <button type="submit" class="cta-button">Entregar</button>
+            </form>
+        </main>
+
+        <nav class="bottom-nav">
+            <a href="#" class="nav-item active" data-target="dashboard-view">
+                <i class="ph-house"></i>
+                <span>Painel de Controle</span>
+            </a>
+            <a href="#" class="nav-item" data-target="inventario-view">
+                <i class="ph-book-open"></i>
+                <span>Inventário</span>
+            </a>
+            <a href="#" class="nav-item" data-target="relatorios-view">
+                <i class="ph-chart-bar"></i>
+                <span>Relatórios</span>
+            </a>
+        </nav>
+
+        <div id="item-detail-drawer" class="drawer">
+            <div class="drawer-content">
+                <div class="drawer-handle"></div>
+                <div id="drawer-body">
+                    </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="loader" class="hidden">
+        <div class="spinner"></div>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.5/xlsx.full.min.js"></script>
+    
+    <script src="script.js"></script>
+</body>
+</html>
